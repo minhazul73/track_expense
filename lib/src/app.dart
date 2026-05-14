@@ -1,4 +1,4 @@
-import 'package:track_expense/src/imports/core_imports.dart';
+import 'package:track_expense/src/core/imports/core_imports.dart';
 
 class App extends StatelessWidget {
   const App({super.key});

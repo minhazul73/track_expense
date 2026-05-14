@@ -1,4 +1,4 @@
-import 'package:track_expense/src/utils/utils.dart';
+import 'package:track_expense/src/core/utils/utils.dart';
 import 'package:track_expense/src/features/auth/domain/entities/user.dart';
 
 abstract class AuthRepository {

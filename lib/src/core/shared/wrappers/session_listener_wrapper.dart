@@ -1,5 +1,5 @@
-import 'package:track_expense/src/imports/core_imports.dart';
-import 'package:track_expense/src/imports/packages_imports.dart';
+import 'package:track_expense/src/core/imports/core_imports.dart';
+import 'package:track_expense/src/core/imports/packages_imports.dart';
 
 import 'package:track_expense/src/features/auth/presentation/providers/session_provider.dart';
 
@@ -14,9 +14,9 @@ class SessionListenerWrapper extends ConsumerWidget {
       if (next.status != SessionStatus.unknown) {
         FlutterNativeSplash.remove();
         if (next.status == SessionStatus.authenticated) {
-          context.go(AppRoutes.home);
+          appRouter.go(AppRoutes.home);
         } else if (next.status == SessionStatus.unauthenticated) {
-          context.go(AppRoutes.onboarding);
+          appRouter.go(AppRoutes.onboarding);
         }
       }
     });

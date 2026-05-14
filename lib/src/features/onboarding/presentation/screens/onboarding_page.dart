@@ -1,4 +1,4 @@
-import 'package:track_expense/src/imports/imports.dart';
+import 'package:track_expense/src/core/imports/imports.dart';
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});

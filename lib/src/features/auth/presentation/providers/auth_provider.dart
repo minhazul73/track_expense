@@ -1,5 +1,5 @@
-import 'package:track_expense/src/imports/core_imports.dart';
-import 'package:track_expense/src/imports/packages_imports.dart';
+import 'package:track_expense/src/core/imports/core_imports.dart';
+import 'package:track_expense/src/core/imports/packages_imports.dart';
 
 import 'package:track_expense/src/features/auth/domain/repositories/auth_repository.dart';
 import 'package:track_expense/src/features/auth/data/repositories/auth_repository_impl.dart';

@@ -1,5 +1,5 @@
-import 'src/imports/core_imports.dart';
-import 'src/imports/packages_imports.dart';
+import 'src/core/imports/core_imports.dart';
+import 'src/core/imports/packages_imports.dart';
 import 'src/app.dart';
 
 

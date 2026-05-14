@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
-import 'package:track_expense/src/routing/global_navigator.dart';
-import 'package:track_expense/src/routing/app_routes.dart';
+import 'package:track_expense/src/core/routing/global_navigator.dart';
+import 'package:track_expense/src/core/routing/app_routes.dart';
 
 import 'package:track_expense/src/features/auth/presentation/screens/login_screen.dart';
 import 'package:track_expense/src/features/auth/presentation/screens/signup_screen.dart';

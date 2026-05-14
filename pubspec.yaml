@@ -52,6 +52,7 @@ dependencies:
   # Animations
   flutter_animate: ^4.5.2
   smooth_page_indicator: ^2.0.1
+  liquid_glass_widgets: ^0.11.0
 
   # Environment
   flutter_dotenv: ^6.0.0

@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:track_expense/src/imports/imports.dart';
+import 'package:track_expense/src/core/imports/imports.dart';
 import 'package:track_expense/src/features/auth/domain/entities/user.dart';
 import 'package:track_expense/src/features/auth/domain/repositories/auth_repository.dart';
 
