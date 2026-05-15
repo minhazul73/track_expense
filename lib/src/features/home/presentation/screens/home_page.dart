@@ -17,10 +17,6 @@ class HomePage extends ConsumerWidget {
     final user = session.user;
 
     return Scaffold(
-      backgroundColor: colorScheme.surface,
-      appBar: AppTopBar(
-        title: 'home.home_title'.tr(),
-      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(AppSpacing.xl.w),
@@ -43,7 +39,7 @@ class HomePage extends ConsumerWidget {
                   fontSize: 28.sp,
                 ),
               ),
-                            SizedBox(height: AppSpacing.md.h),
+              SizedBox(height: AppSpacing.md.h),
               Text(
                 user != null && user.name != null ? user.email : ('home.home_subtitle'.tr()),
                 textAlign: TextAlign.center,
@@ -52,7 +48,7 @@ class HomePage extends ConsumerWidget {
                   fontSize: 14.sp,
                 ),
               ),
-                          ],
+            ],
           ),
         ),
       ),

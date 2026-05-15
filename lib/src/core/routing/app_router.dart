@@ -6,7 +6,7 @@ import 'package:track_expense/src/features/auth/presentation/screens/login_scree
 import 'package:track_expense/src/features/auth/presentation/screens/signup_screen.dart';
 import 'package:track_expense/src/features/auth/presentation/screens/forgot_password_screen.dart';
 
-import 'package:track_expense/src/features/home/presentation/screens/home_page.dart';
+import 'package:track_expense/src/features/bottom_nav/presentation/screens/bottom_nav_page.dart';
 import 'package:track_expense/src/features/onboarding/presentation/screens/onboarding_page.dart';
 
 
@@ -37,7 +37,7 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.home,
       name: 'home',
-      builder: (context, state) => const HomePage(),
+      builder: (context, state) => const BottomNavPage(),
     ),
   ],
 );

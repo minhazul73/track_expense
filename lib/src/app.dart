@@ -24,7 +24,30 @@ class App extends StatelessWidget {
         Widget current = child!;
         current = SkeletonWrapper(child: current);
         current = SessionListenerWrapper(child: current);
-        return current;
+        // final scheme = Theme.of(context).colorScheme;
+        return Stack(
+          children: [
+            const Positioned.fill(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      // scheme.primary.withValues(alpha: 0.25),
+                      // scheme.secondary.withValues(alpha: 0.2),
+                      // scheme.tertiary.withValues(alpha: 0.15),
+                      // scheme.surface,
+                      Color(0xFF0A0A2E), Color(0xFF1A0A3E), Color(0xFF0D1B2A)
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            current,
+          ],
+        );
+          // return current;
       },
     );
   }

@@ -11,6 +11,6 @@ class StateWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProviderScope(child: child);
+    return ProviderScope(child: LiquidGlassWidgets.wrap(child: child));
   }
 }

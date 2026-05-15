@@ -12,6 +12,7 @@ Future<void> main() async {
   
   await AppConfig.init();
   await HiveService.instance.init();
+  await LiquidGlassWidgets.initialize();
 
   runApp(
     const LocalizationWrapper(

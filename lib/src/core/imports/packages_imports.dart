@@ -26,5 +26,6 @@ export 'package:permission_handler/permission_handler.dart';
 export 'package:geolocator/geolocator.dart' hide ServiceStatus;
 export 'package:device_info_plus/device_info_plus.dart';
 export 'package:app_version_update/app_version_update.dart';
+export 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 
 

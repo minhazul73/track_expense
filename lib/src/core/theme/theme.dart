@@ -99,7 +99,7 @@ ThemeData _buildTheme(ColorScheme colorScheme, AppColorsExtension customColors) 
     ],
     
     // --- Basic Elements ---
-    scaffoldBackgroundColor: colorScheme.surface,
+    scaffoldBackgroundColor: Colors.transparent,
     dividerTheme: DividerThemeData(
       color: colorScheme.outlineVariant,
       thickness: 1,
