@@ -1,22 +1,22 @@
-import 'package:track_expense/src/core/imports/core_imports.dart';
-import 'package:track_expense/src/core/imports/packages_imports.dart';
+import 'package:fpdart/fpdart.dart';
 
+import 'package:track_expense/src/core/utils/utils.dart';
+import 'package:track_expense/src/features/auth/data/models/user_model.dart';
+import 'package:track_expense/src/features/auth/data/services/auth_remote_service.dart';
 import 'package:track_expense/src/features/auth/domain/entities/user.dart';
 import 'package:track_expense/src/features/auth/domain/repositories/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
-  final AuthService _authService = AuthService.instance;
+  AuthRepositoryImpl({AuthRemoteService? remoteService})
+  : _remoteService = remoteService ?? AuthRemoteServiceImpl();
+
+  final AuthRemoteService _remoteService;
 
   @override
   Stream<AppUser?> get onAuthStateChanged {
-    return _authService.authStateChanges.map((userData) {
+    return _remoteService.authStateChanges.map((userData) {
       if (userData == null) return null;
-      return AppUser(
-        id: userData['id'] ?? '',
-        email: userData['email'] ?? '',
-        name: userData['name'],
-        photoUrl: userData['photoUrl'],
-      );
+      return AppUserModel.fromMap(userData).toEntity();
     });
   }
 
@@ -25,19 +25,14 @@ class AuthRepositoryImpl implements AuthRepository {
     required String email, 
     required String password,
   }) async {
-    final result = await _authService.login(email: email, password: password);
+    final result = await _remoteService.login(email: email, password: password);
     
     return result.flatMap((userData) {
       if (userData == null) {
         return left(const ServerFailure('Login failed: User record not found'));
       }
 
-      final data = userData['user'] ?? userData;
-      final user = AppUser(
-        id: data['id'].toString(), 
-        email: data['email'] ?? email, 
-        name: data['name'],
-      );
+      final user = AppUserModel.fromMap(userData).toEntity();
       
       return right(user);
     });
@@ -49,7 +44,7 @@ class AuthRepositoryImpl implements AuthRepository {
     required String email, 
     required String password,
   }) async {
-    final result = await _authService.signUp(
+    final result = await _remoteService.signUp(
       name: name,
       email: email,
       password: password,
@@ -60,12 +55,7 @@ class AuthRepositoryImpl implements AuthRepository {
         return left(const ServerFailure('Sign up failed: User record corrupted'));
       }
 
-      final data = userData['user'] ?? userData;
-      final user = AppUser(
-        id: data['id'].toString(), 
-        email: data['email'] ?? email, 
-        name: name,
-      );
+      final user = AppUserModel.fromMap(userData).toEntity();
       
       return right(user);
     });
@@ -73,27 +63,22 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   FutureEither<void> forgotPassword({required String email}) {
-    return _authService.forgotPassword(email: email);
+    return _remoteService.forgotPassword(email: email);
   }
 
   @override
   FutureEither<void> logout() {
-    return _authService.logout();
+    return _remoteService.logout();
   }
 
   @override
   FutureEither<AppUser?> checkAuthState() async {
-    final result = await _authService.getCurrentUser();
+    final result = await _remoteService.getCurrentUser();
     
     return result.map((userData) {
       if (userData == null) return null;
 
-      return AppUser(
-        id: userData['id'], 
-        email: userData['email'] ?? '', 
-        name: userData['name'],
-        photoUrl: userData['photoUrl'],
-      );
+      return AppUserModel.fromMap(userData).toEntity();
     });
   }
 }

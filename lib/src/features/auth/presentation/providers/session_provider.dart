@@ -1,25 +1,24 @@
 import 'dart:async';
 import 'package:track_expense/src/core/imports/imports.dart';
 import 'package:track_expense/src/features/auth/domain/entities/user.dart';
-import 'package:track_expense/src/features/auth/domain/repositories/auth_repository.dart';
-
-import 'package:track_expense/src/features/auth/data/repositories/auth_repository_impl.dart';
-
-/// Provides the AuthRepository instance
-final authRepositoryProvider = Provider<AuthRepository>((ref) {
-  return AuthRepositoryImpl();
-});
+import 'package:track_expense/src/features/auth/domain/usecases/check_auth_state_usecase.dart';
+import 'package:track_expense/src/features/auth/domain/usecases/logout_usecase.dart';
+import 'package:track_expense/src/features/auth/domain/usecases/observe_auth_state_usecase.dart';
+import 'package:track_expense/src/features/auth/presentation/providers/auth_dependencies.dart';
 
 /// Provides a stream of auth state changes
 final authStateStreamProvider = StreamProvider<AppUser?>((ref) {
-  final repo = ref.watch(authRepositoryProvider);
-  return repo.onAuthStateChanged;
+  final useCase = ref.watch(observeAuthStateUseCaseProvider);
+  return useCase();
 });
 
 /// Provides the current session state
 final sessionProvider = StateNotifierProvider<SessionNotifier, SessionState>((ref) {
-  final repo = ref.read(authRepositoryProvider);
-  return SessionNotifier(repository: repo);
+  return SessionNotifier(
+    checkAuthState: ref.read(checkAuthStateUseCaseProvider),
+    observeAuthState: ref.read(observeAuthStateUseCaseProvider),
+    logout: ref.read(logoutUseCaseProvider),
+  );
 });
 
 /// Session states
@@ -40,18 +39,25 @@ class SessionState {
 }
 
 class SessionNotifier extends StateNotifier<SessionState> {
-  final AuthRepository _repository;
+  final CheckAuthStateUseCase _checkAuthState;
+  final ObserveAuthStateUseCase _observeAuthState;
+  final LogoutUseCase _logout;
   StreamSubscription<AppUser?>? _authSub;
 
-  SessionNotifier({required AuthRepository repository})
-      : _repository = repository,
+  SessionNotifier({
+    required CheckAuthStateUseCase checkAuthState,
+    required ObserveAuthStateUseCase observeAuthState,
+    required LogoutUseCase logout,
+  })  : _checkAuthState = checkAuthState,
+        _observeAuthState = observeAuthState,
+        _logout = logout,
         super(const SessionState()) {
     _init();
   }
 
   Future<void> _init() async {
     // Check persisted session first
-    final result = await _repository.checkAuthState();
+    final result = await _checkAuthState();
     result.fold(
       (_) => state = const SessionState(status: SessionStatus.unauthenticated),
       (user) {
@@ -64,7 +70,7 @@ class SessionNotifier extends StateNotifier<SessionState> {
     );
 
     // Listen for future changes
-    _authSub = _repository.onAuthStateChanged.listen((user) {
+    _authSub = _observeAuthState().listen((user) {
       if (user != null) {
         state = SessionState(status: SessionStatus.authenticated, user: user);
       } else {
@@ -74,7 +80,7 @@ class SessionNotifier extends StateNotifier<SessionState> {
   }
 
   Future<void> logout() async {
-    await _repository.logout();
+    await _logout();
     state = const SessionState(status: SessionStatus.unauthenticated);
   }
 

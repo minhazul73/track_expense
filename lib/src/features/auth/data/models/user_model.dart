@@ -1,23 +1,41 @@
-import 'package:equatable/equatable.dart';
+import 'package:track_expense/src/features/auth/domain/entities/user.dart';
 
-class AppUser extends Equatable {
-  final String id;
-  final String email;
-  final String? name;
-  final String? photoUrl;
-
-  const AppUser({
-    required this.id,
-    required this.email,
-    this.name,
-    this.photoUrl,
+class AppUserModel extends AppUser {
+  const AppUserModel({
+    required super.id,
+    required super.email,
+    super.name,
+    super.photoUrl,
   });
 
-  factory AppUser.empty() => const AppUser(id: '', email: '');
+  factory AppUserModel.fromMap(Map<String, dynamic> map) {
+    final data = map['user'] is Map<String, dynamic>
+        ? map['user'] as Map<String, dynamic>
+        : map;
 
-  bool get isEmpty => id.isEmpty;
-  bool get isNotEmpty => id.isNotEmpty;
+    return AppUserModel(
+      id: (data['id'] ?? '').toString(),
+      email: (data['email'] ?? '').toString(),
+      name: data['name'] as String?,
+      photoUrl: data['photoUrl'] as String?,
+    );
+  }
 
-  @override
-  List<Object?> get props => [id, email, name, photoUrl];
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'email': email,
+      if (name != null) 'name': name,
+      if (photoUrl != null) 'photoUrl': photoUrl,
+    };
+  }
+
+  AppUser toEntity() {
+    return AppUser(
+      id: id,
+      email: email,
+      name: name,
+      photoUrl: photoUrl,
+    );
+  }
 }
